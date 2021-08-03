@@ -38,3 +38,6 @@ jobs:
       - name: Setup AdoptOpenJDK
         uses: joschi/setup-jdk@v2.3.0
 
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1.6
+
