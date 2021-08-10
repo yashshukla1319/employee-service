@@ -3,12 +3,12 @@ services:
   employee:
     image: employee-service
     ports:
-    - 8079:8079
+     8079:8079
 
   mysql:
     image: mysql
     ports:
-    - 3300:3300
+     3300:3300
     environment:
-    -  MYSQL_ROOT_USER=root
-    -  MYSQL_ROOT_PASSWORD=MainWill72
+      MYSQL_ROOT_USER=root
+      MYSQL_ROOT_PASSWORD=MainWill72
