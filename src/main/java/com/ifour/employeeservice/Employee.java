@@ -1,11 +1,10 @@
 package com.ifour.employeeservice;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table
-public class Employee implements Serializable {
+public class Employee {
     @Id
     private int id;
     private String name;

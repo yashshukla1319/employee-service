@@ -1,19 +1,29 @@
 version: '3'
 services:
+  eurekas:
+    image: eureka-server
+    ports:
+      - 8761:8761
+
   employee:
     image: employee-service
-    ports:
-     - 8079:8079
+    depends_on:
+      - mysql
+    network_mode: "host"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://127.0.0.1:3306/employeemanagement?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=MainWill72
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5Dialect
+      - SPRING_CLOUD_CONFIG_URL= http://127.0.0.1:8761
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE= http://127.0.01:8761/eureka
 
   mysql:
     image: mysql
     ports:
-     - 3300:3300
+     - 3306:3306
     environment:
      - MYSQL_ROOT_USER=root
      - MYSQL_ROOT_PASSWORD=MainWill72
 
-  eureka:
-    image: eureka-server
-    ports:
-      - 8761:8761
