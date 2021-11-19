@@ -1,11 +1,11 @@
 package com.ifour.employeeservice;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 
-@Entity
-@Table
+//@Entity
+//@Table
 public class Employee {
-    @Id
+    //@Id
     private int id;
     private String name;
     private int salary;

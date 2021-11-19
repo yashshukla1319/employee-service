@@ -5,6 +5,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,85 +23,77 @@ class EmployeeServiceTest {
     Employee employee = new Employee();
 
     @Test
-    void getEmployee() {
-        List<Employee> employeeList = new ArrayList<>();
+    void getEmployee() throws SQLException {
+        List<Employee> employeeList = new  ArrayList<>();
         employeeList.add(employee);
-        Mockito.when(employeeRepository.findAll()).thenReturn(employeeList);
-        List<Employee> output = employeeRepository.findAll();
+        Mockito.when(employeeRepository.getEmployee()).thenReturn(employeeList);
+        List<Employee> output = employeeRepository.getEmployee();
         assertEquals(employeeList,output);
     }
 
     @Test
-    void getEmployeeById(){
-        Optional<Employee> employeeList = Optional.of(employee);
-        Mockito.when(employeeRepository.findById(Mockito.anyInt())).thenReturn(employeeList);
-        Optional<Employee> output = employeeService.getEmployeeById(1);
+    void getEmployeeById() throws SQLException {
+        Employee employeeList = new Employee();
+        Mockito.when(employeeRepository.getEmployeeById(Mockito.anyInt())).thenReturn(employeeList);
+        Employee output = employeeService.getEmployeeById(1);
         assertEquals(employeeList,output);
     }
 
     @Test
-    void addNewEmployee(){
+    void addNewEmployee() throws SQLException {
         employee.setName("amit");
         employee.setDeptId(201);
         employee.setId(1);
-        Mockito.when(employeeRepository.save(Mockito.any())).thenReturn(employee);
+        Mockito.when(employeeRepository.addNewEmployee(Mockito.any())).thenReturn(employee);
         Employee output = employeeService.addNewEmployee(employee);
         assertEquals(employee,output);
     }
 
     @Test
-    void deleteEmployee(){
+    void deleteEmployee() throws SQLException {
         EmployeeService employeeService1 = Mockito.mock(EmployeeService.class);
-
-        Mockito.when(employeeRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(employee));
-        Mockito.when(employeeRepository.existsById(1)).thenReturn(true);
+        Mockito.when(employeeRepository.getEmployeeById(Mockito.anyInt())).thenReturn((employee));
         employeeService1.deleteEmployee(1);
         Mockito.verify(employeeService1,Mockito.times(1)).deleteEmployee(1);
     }
 
     @Test
-    void updateEmployee(){
+    void updateEmployee() throws SQLException {
         employee.setName("karan");
         employee.setDeptId(201);
         employee.setId(2);
         employee.setSalary(5000);
-        Mockito.when(employeeRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(employee));
-        Mockito.when(employeeRepository.save(Mockito.any())).thenReturn(employee);
-        Employee output = employeeService.updateEmployee(2,"karan","201",5000);
+        Mockito.when(employeeRepository.getEmployeeById(Mockito.anyInt())).thenReturn((employee));
+        Mockito.when(employeeRepository.addNewEmployee(Mockito.any())).thenReturn(employee);
+        Employee output = employeeService.updateEmployee(employee);
         assertEquals(employee,output);
     }
 
     @Test
-    void findAllByDeptId(){
+    void findAllByDeptId() throws SQLException {
 
         List<Employee> employeesList = new ArrayList<>();
         employeesList.add(employee);
-
         Mockito.when(employeeRepository.findAllByDeptId(Mockito.anyInt())).thenReturn(employeesList);
         List<Employee> output = employeeService.findAllByDeptId(101);
-
         assertEquals(employeesList,output);
     }
 
     @Test
-    void getEmployeeByName() {
+    void getEmployeeByName() throws SQLException {
         List<Employee> employeesList = new ArrayList<>();
         employeesList.add(employee);
-
-        Mockito.when(employeeRepository.findAllByName(Mockito.any())).thenReturn(employeesList);
+        Mockito.when(employeeRepository.getEmployeeByName(Mockito.any())).thenReturn(employeesList);
         List<Employee> output = employeeService.getEmployeeByName("yash");
-
         assertEquals(employeesList,output);
     }
 
     @Test
-    void getEmployeeIn() {
+    void getEmployeeIn() throws SQLException {
         List<Employee> employeesList = new ArrayList<>();
         employeesList.add(employee);
-
         Mockito.when(employeeRepository.findByIdIn(Mockito.any())).thenReturn(employeesList);
         List<Employee> output = employeeService.getEmployeeIn(List.of(101,102));
-
         assertEquals(employeesList,output);
     }
 }

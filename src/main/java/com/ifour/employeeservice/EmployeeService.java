@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.*;
 
 @Service
@@ -14,69 +15,56 @@ public class EmployeeService {
     @Autowired
     public EmployeeRepository employeeRepository;
 
-    public List<Employee> getEmployee(int no, int size)
+    public List<Employee> getEmployee()
     {
-        Pageable pageable = PageRequest.of(no,size);
-        Page<Employee> employeePage = employeeRepository.findAll(pageable);
-        return employeePage.getContent();
+        //Pageable pageable = PageRequest.of(no,size);
+        //Page<Employee> employeePage = employeeRepository.getEmployee(pageable);
+        List<Employee> employeePage = new ArrayList<>();
+        return employeeRepository.getEmployee();
     }
 
-    public Optional<Employee> getEmployeeById(Integer id)
-    {
-        return employeeRepository.findById(id);
+    public Employee getEmployeeById(Integer id) throws SQLException {
+        return employeeRepository.getEmployeeById(id);
     }
 
-    public Employee addNewEmployee(Employee employee) {
-        Optional<Employee> getEmployeeById =  employeeRepository.findById(employee.getId());
-        if(getEmployeeById != null && getEmployeeById.isPresent())
+    public Employee addNewEmployee(Employee employee) throws SQLException {
+        Employee getEmployeeById =  employeeRepository.getEmployeeById(employee.getId());
+        if(getEmployeeById != null)
         {
             throw new IllegalStateException("Id already present.");
         }
-        return employeeRepository.save(employee);
+        return employeeRepository.addNewEmployee(employee);
     }
 
-    public String deleteEmployee(Integer id) {
-        boolean exist = employeeRepository.existsById(id);
-        if(!exist)
+    public void deleteEmployee(Integer id) throws SQLException {
+         Employee exist = employeeRepository.getEmployeeById(id);
+        if(exist == null)
         {
             throw new IllegalStateException("Employee with Id"+id+"does not exists");
         }
-        employeeRepository.deleteById(id);
-        return"Employee with id"+id;
+        employeeRepository.deleteEmployee(id);
     }
 
     @Transactional
-    public Employee updateEmployee(Integer id, String name, String deptId, Integer salary)
-    {
-        System.out.println(id);
-        System.out.println(name);
-        System.out.println(deptId);
-        System.out.println(salary);
-        Employee employee = employeeRepository.findById(id).orElseThrow(()->new IllegalStateException("Employee with Id"+id+"is not present"));
-
-        if(name !=null &&  !Objects.equals(employee.getName(),name))
+    public Employee updateEmployee(Employee employee) throws SQLException {
+        Employee exists = employeeRepository.getEmployeeById(employee.getId());
+        if(exists == null )
         {
-            employee.setName(name);
+            throw new IllegalStateException("Employee with this id does not exist");
         }
-
-        if(salary !=null && salary>0 && !Objects.equals(employee.getSalary(),salary))
-        {
-            employee.setSalary(Math.toIntExact(salary));
-        }
-
-        return employeeRepository.save(employee);
+        return employeeRepository.updateEmployee(employee);
     }
 
-    public List<Employee> findAllByDeptId(Integer deptId) {
+    public List<Employee> findAllByDeptId(Integer deptId) throws SQLException {
         return employeeRepository.findAllByDeptId(deptId);
 
     }
 
-    public List<Employee> getEmployeeByName(String name) {
-        return employeeRepository.findAllByName(name);
+    public List<Employee> getEmployeeByName(String name) throws SQLException {
+        return employeeRepository.getEmployeeByName(name);
     }
 
-    public List<Employee> getEmployeeIn(List<Integer> id) {
+    public List<Employee> getEmployeeIn(List<Integer> id) throws SQLException {
         return employeeRepository.findByIdIn(id);
     }
 }
