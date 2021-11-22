@@ -18,8 +18,7 @@ public class EmployeeController {
     public RestTemplate restTemplate;
 
     @RequestMapping(path = "/getAllEmployees")
-    public List<Employee> getEmployee()
-    {
+    public List<Employee> getEmployee() throws SQLException {
         return employeeService.getEmployee();
     }
 

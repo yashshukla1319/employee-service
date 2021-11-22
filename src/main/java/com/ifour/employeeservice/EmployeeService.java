@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.*;
 
@@ -15,8 +14,9 @@ public class EmployeeService {
     @Autowired
     public EmployeeRepository employeeRepository;
 
-    public List<Employee> getEmployee()
-    {
+    HashMap hashMap = new HashMap();
+
+    public List<Employee> getEmployee() throws SQLException {
         //Pageable pageable = PageRequest.of(no,size);
         //Page<Employee> employeePage = employeeRepository.getEmployee(pageable);
         List<Employee> employeePage = new ArrayList<>();
@@ -28,19 +28,17 @@ public class EmployeeService {
     }
 
     public Employee addNewEmployee(Employee employee) throws SQLException {
-        Employee getEmployeeById =  employeeRepository.getEmployeeById(employee.getId());
-        if(getEmployeeById != null)
-        {
+        Employee getEmployeeById = employeeRepository.getEmployeeById(employee.getId());
+        if (getEmployeeById != null) {
             throw new IllegalStateException("Id already present.");
         }
         return employeeRepository.addNewEmployee(employee);
     }
 
     public void deleteEmployee(Integer id) throws SQLException {
-         Employee exist = employeeRepository.getEmployeeById(id);
-        if(exist == null)
-        {
-            throw new IllegalStateException("Employee with Id"+id+"does not exists");
+        Employee exist = employeeRepository.getEmployeeById(id);
+        if (exist == null) {
+            throw new IllegalStateException("Employee with Id" + id + "does not exists");
         }
         employeeRepository.deleteEmployee(id);
     }
@@ -48,8 +46,7 @@ public class EmployeeService {
     @Transactional
     public Employee updateEmployee(Employee employee) throws SQLException {
         Employee exists = employeeRepository.getEmployeeById(employee.getId());
-        if(exists == null )
-        {
+        if (exists == null) {
             throw new IllegalStateException("Employee with this id does not exist");
         }
         return employeeRepository.updateEmployee(employee);
@@ -66,6 +63,26 @@ public class EmployeeService {
 
     public List<Employee> getEmployeeIn(List<Integer> id) throws SQLException {
         return employeeRepository.findByIdIn(id);
+    }
+
+    public void addEmployeeInCache(Integer employeeId, Employee employee) {
+        hashMap.put(employeeId, employee);
+    }
+
+    public Employee getEmployeeFromCache(Integer id) {
+        return (Employee) hashMap.get(id);
+    }
+
+    public void updateEmployeeInCache(Integer employeeId, Employee employee) throws SQLException {
+        if (hashMap.containsKey(employeeId)) {
+            hashMap.replace(employeeId, employee);
+        }
+    }
+
+    public void deleteEmployeeInCache(Integer employeeId) {
+        if (hashMap.containsKey(employeeId)) {
+            hashMap.remove(employeeId);
+        }
     }
 }
 
