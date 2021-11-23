@@ -15,11 +15,12 @@ public class PersistenceLayer {
 
     public Employee getEmployeeById(Integer id) throws SQLException {
         Employee exist = null;
-        /*if (cacheDAO.getEmployeeFromCache(id) != null){
-            exist = cacheDAO.getEmployeeFromCache(id);
-        }*/
-        return repoImplementation.getEmployeeById(id);
-        //return exist;
+        if (cacheDAO.getEmployeeFromCache(id) != null){
+            return cacheDAO.getEmployeeFromCache(id);
+        }
+        else {
+            return repoImplementation.getEmployeeById(id);
+        }
     }
 
     public List<Employee> findAllByDeptId(Integer deptId) throws SQLException{
@@ -35,8 +36,7 @@ public class PersistenceLayer {
     }
 
     public List<Employee> getEmployee() throws SQLException{
-        List<Employee> employees = repoImplementation.getEmployee();
-        return employees;
+        return repoImplementation.getEmployee();
     }
 
     public Employee addNewEmployee(Employee employee) throws SQLException{
@@ -44,12 +44,11 @@ public class PersistenceLayer {
         repoImplementation.addNewEmployee(employee);
         Employee exist = cacheDAO.getEmployeeFromCache(employee.getId());
         if (exist != null){
-            exist = cacheDAO.getEmployeeFromCache(employee.getId());
+            return cacheDAO.getEmployeeFromCache(employee.getId());
         }
         else{
-            repoImplementation.getEmployeeById(employee.getId());
+            return repoImplementation.getEmployeeById(employee.getId());
         }
-        return exist;
     }
     public void deleteEmployee(Integer id) throws SQLException{
         cacheDAO.deleteEmployeeInCache(id);
@@ -60,11 +59,10 @@ public class PersistenceLayer {
         repoImplementation.updateEmployee(employee);
         Employee exist = cacheDAO.getEmployeeFromCache(employee.getId());
         if (exist != null){
-            exist = cacheDAO.getEmployeeFromCache(employee.getId());
+            return cacheDAO.getEmployeeFromCache(employee.getId());
         }
         else{
-            repoImplementation.getEmployeeById(employee.getId());
+            return repoImplementation.getEmployeeById(employee.getId());
         }
-        return exist;
     }
 }

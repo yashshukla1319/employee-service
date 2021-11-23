@@ -24,6 +24,10 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeById(Integer id) throws SQLException {
+        Employee exist = employeeRepository.getEmployeeById(id);
+        if (exist == null){
+            System.out.println("Employee Does not Exist...!");
+        }
         return employeeRepository.getEmployeeById(id);
     }
 

@@ -129,15 +129,6 @@ public class RepoImplementation implements EmployeeRepository {
         stmt.setInt(4,employee.getDeptId());
         stmt.setString(5,employee.getDeptName());
 
-        int add = stmt.executeUpdate();
-        while (add != 0) {
-            employee.setId(rs.getInt("id"));
-            employee.setName(rs.getString("name"));
-            employee.setSalary(rs.getInt("salary"));
-            employee.setDeptId(rs.getInt("deptId"));
-            employee.setDeptName(rs.getString("deptName"));
-        }
-        connectionPoolClass.releaseConnection();
         return employee;
     }
 
@@ -161,7 +152,7 @@ public class RepoImplementation implements EmployeeRepository {
         stmt.setInt(4,employee.getDeptId());
         stmt.setString(5,employee.getDeptName());
         stmt.setInt(6,employee.getId());
-        rs = stmt.executeQuery();
+        int update  = stmt.executeUpdate();
         while (rs.next() && rs!=null) {
             employee.setId(rs.getInt("id"));
             employee.setName(rs.getString("name"));
