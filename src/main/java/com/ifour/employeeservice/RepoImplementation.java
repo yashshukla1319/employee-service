@@ -1,14 +1,13 @@
 package com.ifour.employeeservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -16,6 +15,8 @@ public class RepoImplementation implements EmployeeRepository {
 
     Connection con;
     ResultSet rs;
+    HashMap<Integer,Employee> hashMap = new HashMap();
+    RepoImplementation repoImplementation;
 
     @Autowired
     private ConnectionPoolClass connectionPoolClass;
@@ -36,6 +37,7 @@ public class RepoImplementation implements EmployeeRepository {
             employee.setSalary(rs.getInt("salary"));
             employees.add(employee);
         }
+        connectionPoolClass.releaseConnection();
         return employees;
     }
 
@@ -55,6 +57,7 @@ public class RepoImplementation implements EmployeeRepository {
             employee.setSalary(rs.getInt("salary"));
             employees.add(employee);
         }
+        connectionPoolClass.releaseConnection();
         return employees;
     }
 
@@ -75,7 +78,8 @@ public class RepoImplementation implements EmployeeRepository {
             employee.setSalary(rs.getInt("salary"));
             employees.add(employee);
         }
-            return employees;
+        connectionPoolClass.releaseConnection();
+        return employees;
     }
 
     @Override
@@ -93,6 +97,7 @@ public class RepoImplementation implements EmployeeRepository {
             employee.setSalary(rs.getInt("salary"));
             employees.add(employee);
         }
+        connectionPoolClass.releaseConnection();
         return employees;
     }
 
@@ -110,6 +115,7 @@ public class RepoImplementation implements EmployeeRepository {
             employee.setDeptName(rs.getString("deptName"));
             employee.setSalary(rs.getInt("salary"));
         }
+        connectionPoolClass.releaseConnection();
         return employee;
     }
 
@@ -130,6 +136,7 @@ public class RepoImplementation implements EmployeeRepository {
             employee.setDeptName(rs.getString("deptName"));
             employee.setSalary(rs.getInt("salary"));
         }
+        connectionPoolClass.releaseConnection();
         return employee;
     }
 
@@ -140,6 +147,7 @@ public class RepoImplementation implements EmployeeRepository {
         statement.setInt(1,id);
         rs = statement.executeQuery();
         System.out.println("Successfully Deleted...!!");
+        connectionPoolClass.releaseConnection();
     }
 
     @Override
@@ -159,6 +167,7 @@ public class RepoImplementation implements EmployeeRepository {
             employee.setDeptName(rs.getString("deptName"));
             employee.setSalary(rs.getInt("salary"));
         }
+        connectionPoolClass.releaseConnection();
         return employee;
     }
 }

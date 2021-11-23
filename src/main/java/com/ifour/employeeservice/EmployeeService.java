@@ -64,26 +64,6 @@ public class EmployeeService {
     public List<Employee> getEmployeeIn(List<Integer> id) throws SQLException {
         return employeeRepository.findByIdIn(id);
     }
-
-    public void addEmployeeInCache(Integer employeeId, Employee employee) {
-        hashMap.put(employeeId, employee);
-    }
-
-    public Employee getEmployeeFromCache(Integer id) {
-        return (Employee) hashMap.get(id);
-    }
-
-    public void updateEmployeeInCache(Integer employeeId, Employee employee) throws SQLException {
-        if (hashMap.containsKey(employeeId)) {
-            hashMap.replace(employeeId, employee);
-        }
-    }
-
-    public void deleteEmployeeInCache(Integer employeeId) {
-        if (hashMap.containsKey(employeeId)) {
-            hashMap.remove(employeeId);
-        }
-    }
 }
 
 

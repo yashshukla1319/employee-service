@@ -20,21 +20,25 @@ public class ConnectionPoolClass {
     }
 
     public Connection getConnection() throws SQLException {
-        Connection con;
         for (int count = 0; count < max; count++) {
-            /*if (availConnection.size() == 0) {
+            if (availConnection.size() == 0) {
                 System.out.println("Sorry all Connections are in use...!");
-                return null;*/
-            //con = availConnection.remove(availConnection.size() - 1);
-            //    usedConnection.add(con);
-            //}
-            availConnection.add(this.createNewConnection());
+                usedConnection.add(this.createNewConnection());
+            }
         }
         return this.createNewConnection();
     }
+
+    public void releaseConnection() throws SQLException{
+        this.createNewConnection().close();
+        usedConnection.remove(this.createNewConnection());
+        availConnection.add(this.createNewConnection());
+    }
+
     public int usedCount(){
         return usedConnection.size();
     }
+
     public int availCount(){
         return availConnection.size();
     }
