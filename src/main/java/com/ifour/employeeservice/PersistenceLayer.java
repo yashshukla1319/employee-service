@@ -15,11 +15,11 @@ public class PersistenceLayer {
 
     public Employee getEmployeeById(Integer id) throws SQLException {
         Employee exist = null;
-        if (cacheDAO.getEmployeeFromCache(id) != null){
+        /*if (cacheDAO.getEmployeeFromCache(id) != null){
             exist = cacheDAO.getEmployeeFromCache(id);
-        }
-        repoImplementation.getEmployeeById(id);
-        return exist;
+        }*/
+        return repoImplementation.getEmployeeById(id);
+        //return exist;
     }
 
     public List<Employee> findAllByDeptId(Integer deptId) throws SQLException{

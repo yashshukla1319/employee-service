@@ -145,7 +145,7 @@ public class RepoImplementation implements EmployeeRepository {
         con = connectionPoolClass.getConnection();
         PreparedStatement statement = con.prepareStatement("Delete from Employee where id=?");
         statement.setInt(1,id);
-        rs = statement.executeQuery();
+        int delete = statement.executeUpdate();
         System.out.println("Successfully Deleted...!!");
         connectionPoolClass.releaseConnection();
     }

@@ -14,9 +14,6 @@ public class EmployeeController {
     @Autowired
     public EmployeeService employeeService;
 
-    @Autowired
-    public RestTemplate restTemplate;
-
     @RequestMapping(path = "/getAllEmployees")
     public List<Employee> getEmployee() throws SQLException {
         return employeeService.getEmployee();
@@ -28,15 +25,15 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id);
     }
 
-    @RequestMapping(path = "/getEmployeeByListId")
-    public List<Employee> getEmployeeIn(@RequestParam("id") String id) throws SQLException {
+    @RequestMapping(path = "/getEmployeeByListId/{id}")
+    public List<Employee> getEmployeeIn(@PathVariable("id") String id) throws SQLException {
         List<String> ids = Arrays.asList((id.split(",")));
         List<Integer> intIds =  ids.stream().mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
         return employeeService.getEmployeeIn(intIds);
     }
 
-    @RequestMapping(path = "/getEmployeeByName")
-    public List<Employee> getEmployeeByName(@RequestParam("name")String name) throws SQLException {
+    @RequestMapping(path = "/getEmployeeByName/{name}")
+    public List<Employee> getEmployeeByName(@PathVariable("name")String name) throws SQLException {
         return employeeService.getEmployeeByName(name);
     }
 
@@ -50,15 +47,14 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
     }
 
-
     @RequestMapping(path = "/updateExistingEmployeeById/{employeeId}", method = RequestMethod.PUT)
     public void updateEmployee(@RequestBody Employee employee,@PathVariable("employeeId") Integer employeeId) throws SQLException {
         employeeService.updateEmployee(employee);
     }
+
     @RequestMapping(path = "/getEmployeeByDeptId/{deptId}",method = RequestMethod.GET)
     public List<Employee> findAllByDeptId(@PathVariable("deptId")Integer deptId) throws SQLException {
         return employeeService.findAllByDeptId(deptId);
-
     }
 }
 
