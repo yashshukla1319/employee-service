@@ -20,14 +20,12 @@ public class CacheDAO {
     }
 
     public Employee getEmployeeFromCache(Integer id) throws SQLException {
-        Employee output = null;
         if (hashMap.containsKey(id)) {
-            output = (Employee) hashMap.get(id);
+            return hashMap.get(id);
         }
         else {
             return repoImplementation.getEmployeeById(id);
         }
-        return output;
     }
 
     public void updateEmployeeInCache(Integer employeeId, Employee employee) throws SQLException {

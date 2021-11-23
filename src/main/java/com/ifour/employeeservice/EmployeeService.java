@@ -28,10 +28,11 @@ public class EmployeeService {
     }
 
     public Employee addNewEmployee(Employee employee) throws SQLException {
-        Employee getEmployeeById = employeeRepository.getEmployeeById(employee.getId());
+        Employee search = new Employee();
+        /*Employee getEmployeeById = employeeRepository.getEmployeeById(search.getId());
         if (getEmployeeById != null) {
             throw new IllegalStateException("Id already present.");
-        }
+        }*/
         return employeeRepository.addNewEmployee(employee);
     }
 

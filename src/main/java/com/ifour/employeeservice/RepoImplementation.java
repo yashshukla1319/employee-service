@@ -32,9 +32,9 @@ public class RepoImplementation implements EmployeeRepository {
         while (rs.next() && rs!=null) {
             employee.setId(rs.getInt("id"));
             employee.setName(rs.getString("name"));
+            employee.setSalary(rs.getInt("salary"));
             employee.setDeptId(rs.getInt("deptId"));
             employee.setDeptName(rs.getString("deptName"));
-            employee.setSalary(rs.getInt("salary"));
             employees.add(employee);
         }
         connectionPoolClass.releaseConnection();
@@ -122,19 +122,20 @@ public class RepoImplementation implements EmployeeRepository {
     @Override
     public Employee addNewEmployee(Employee employee) throws SQLException {
         con = connectionPoolClass.getConnection();
-        PreparedStatement stmt = con.prepareStatement("Insert into Department(id,name,deptId,deptName,salary) values(?,?,?,?,?)");
+        PreparedStatement stmt = con.prepareStatement("Insert into Employee(id,name,salary,deptId,deptName) values(?,?,?,?,?)");
         stmt.setInt(1,employee.getId());
         stmt.setString(2,employee.getName());
-        stmt.setInt(3,employee.getDeptId());
-        stmt.setString(4,employee.getDeptName());
-        stmt.setInt(5,employee.getSalary());
-        rs = stmt.executeQuery();
-        while (rs.next() && rs!=null) {
+        stmt.setInt(3,employee.getSalary());
+        stmt.setInt(4,employee.getDeptId());
+        stmt.setString(5,employee.getDeptName());
+
+        int add = stmt.executeUpdate();
+        while (add != 0) {
             employee.setId(rs.getInt("id"));
             employee.setName(rs.getString("name"));
+            employee.setSalary(rs.getInt("salary"));
             employee.setDeptId(rs.getInt("deptId"));
             employee.setDeptName(rs.getString("deptName"));
-            employee.setSalary(rs.getInt("salary"));
         }
         connectionPoolClass.releaseConnection();
         return employee;
@@ -153,12 +154,13 @@ public class RepoImplementation implements EmployeeRepository {
     @Override
     public Employee updateEmployee(Employee employee) throws SQLException {
         con = connectionPoolClass.getConnection();
-        PreparedStatement stmt = con.prepareStatement("Update LeaveApi set id=?, name=?, startDate=?, endDate=?, type=?, status=?, totalLeave=? where id=?");
+        PreparedStatement stmt = con.prepareStatement("Update Employee set id=?, name=?, salary=?, deptId=?, deptName=? where id=?");
         stmt.setInt(1,employee.getId());
         stmt.setString(2,employee.getName());
-        stmt.setInt(3,employee.getDeptId());
-        stmt.setString(4,employee.getDeptName());
-        stmt.setInt(5,employee.getSalary());
+        stmt.setInt(3,employee.getSalary());
+        stmt.setInt(4,employee.getDeptId());
+        stmt.setString(5,employee.getDeptName());
+        stmt.setInt(6,employee.getId());
         rs = stmt.executeQuery();
         while (rs.next() && rs!=null) {
             employee.setId(rs.getInt("id"));

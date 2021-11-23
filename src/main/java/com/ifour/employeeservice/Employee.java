@@ -6,16 +6,16 @@ package com.ifour.employeeservice;
 //@Table
 public class Employee {
     //@Id
-    private int id;
+    private Integer id;
     private String name;
-    private int salary;
-    private int deptId;
+    private Integer salary;
+    private Integer deptId;
     private String deptName;
 
     public Employee() {
     }
 
-    public Employee(int id, String name, int salary,int deptId,String deptName) {
+    public Employee(Integer id, String name, Integer salary,Integer deptId,String deptName) {
         this.id = id;
         this.name = name;
         this.salary = salary;
@@ -23,7 +23,7 @@ public class Employee {
         this.deptName = deptName;
     }
 
-    public Employee(String name, int salary, int deptId) {
+    public Employee(String name, Integer salary, Integer deptId) {
         this.name = name;
         this.salary = salary;
         this.deptId = deptId;
@@ -32,7 +32,7 @@ public class Employee {
     public Employee(Employee allByDeptId) {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -48,19 +48,19 @@ public class Employee {
         this.name = name;
     }
 
-    public int getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(Integer salary) {
         this.salary = salary;
     }
 
-    public  int getDeptId() {
+    public  Integer getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(int deptId) {
+    public void setDeptId(Integer deptId) {
         this.deptId = deptId;
     }
 
