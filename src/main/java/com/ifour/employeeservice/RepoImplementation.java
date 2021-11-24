@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -15,8 +14,6 @@ public class RepoImplementation implements EmployeeRepository {
 
     Connection con;
     ResultSet rs;
-    HashMap<Integer,Employee> hashMap = new HashMap();
-    RepoImplementation repoImplementation;
 
     @Autowired
     private ConnectionPoolClass connectionPoolClass;
@@ -128,7 +125,6 @@ public class RepoImplementation implements EmployeeRepository {
         stmt.setInt(3,employee.getSalary());
         stmt.setInt(4,employee.getDeptId());
         stmt.setString(5,employee.getDeptName());
-
         return employee;
     }
 

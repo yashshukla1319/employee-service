@@ -14,7 +14,6 @@ public class PersistenceLayer {
     public RepoImplementation repoImplementation;
 
     public Employee getEmployeeById(Integer id) throws SQLException {
-        Employee exist = null;
         if (cacheDAO.getEmployeeFromCache(id) != null){
             return cacheDAO.getEmployeeFromCache(id);
         }
