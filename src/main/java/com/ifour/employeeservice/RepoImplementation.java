@@ -61,13 +61,13 @@ public class RepoImplementation implements EmployeeRepository {
     @Override
     public List<Employee> findByIdIn(List<Integer> id) throws SQLException {
         int i=0;
-        Employee employee = new Employee();
         List<Employee> employees = new ArrayList<>();
         con = connectionPoolClass.getConnection();
         PreparedStatement stmt = con.prepareStatement("Select * from Employee where id IN(?)");
         stmt.setObject(1,id);
         rs = stmt.executeQuery();
         while (rs.next() && rs!=null) {
+            Employee employee = new Employee();
             employee.setId(rs.getInt("id"));
             employee.setName(rs.getString("name"));
             employee.setDeptId(rs.getInt("deptId"));
@@ -82,11 +82,12 @@ public class RepoImplementation implements EmployeeRepository {
     @Override
     public List<Employee> getEmployee() throws SQLException {
         List<Employee> employees = new ArrayList<>();
-        Employee employee = new Employee();
+
         con = connectionPoolClass.getConnection();
         PreparedStatement stmt = con.prepareStatement("Select * from Employee");
         rs = stmt.executeQuery();
-        while (rs.next() && rs!=null) {
+        while ( rs.next() &&rs!=null) {
+            Employee employee = new Employee();
             employee.setId(rs.getInt("id"));
             employee.setName(rs.getString("name"));
             employee.setDeptId(rs.getInt("deptId"));
@@ -125,6 +126,7 @@ public class RepoImplementation implements EmployeeRepository {
         stmt.setInt(3,employee.getSalary());
         stmt.setInt(4,employee.getDeptId());
         stmt.setString(5,employee.getDeptName());
+        stmt.execute();
         return employee;
     }
 

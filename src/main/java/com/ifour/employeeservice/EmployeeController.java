@@ -9,6 +9,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
+//@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
+
 @RequestMapping("/employee")
 public class EmployeeController {
     @Autowired
@@ -48,8 +51,8 @@ public class EmployeeController {
     }
 
     @RequestMapping(path = "/updateExistingEmployeeById/{employeeId}", method = RequestMethod.PUT)
-    public void updateEmployee(@RequestBody Employee employee,@PathVariable("employeeId") Integer employeeId) throws SQLException {
-        employeeService.updateEmployee(employee);
+    public Employee updateEmployee(@RequestBody Employee employee,@PathVariable("employeeId") Integer employeeId) throws SQLException {
+        return employeeService.updateEmployee(employee);
     }
 
     @RequestMapping(path = "/getEmployeeByDeptId/{deptId}",method = RequestMethod.GET)

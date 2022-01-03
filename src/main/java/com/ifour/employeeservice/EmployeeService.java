@@ -28,8 +28,8 @@ public class EmployeeService {
 
     public Employee addNewEmployee(Employee employee) throws SQLException {
         Employee search = new Employee();
-        Employee getEmployeeById = persistenceLayer.getEmployeeById(search.getId());
-        if (getEmployeeById != null) {
+        Employee getEmployeeById = persistenceLayer.getEmployeeById(employee.getId());
+        if (getEmployeeById.getId() != null) {
             throw new IllegalStateException("Id already present.");
         }
         return persistenceLayer.addNewEmployee(employee);
